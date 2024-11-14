@@ -1,14 +1,15 @@
 using ModernUO.Serialization;
+using Server.Items;
 
 namespace Server.Items;
 
 [SerializationGenerator(0, false)]
-public partial class OrnamentOfTheMagician : GoldBracelet
+public partial class OrnamentOfTheMagician : CursedArtifact
 {
     [Constructible]
-    public OrnamentOfTheMagician()
+    public OrnamentOfTheMagician() : base(0x1088) // Item ID for a bracelet
     {
-        Hue = 0x554;
+        Hue = 0x554; // Color of the ornament
         Attributes.CastRecovery = 3;
         Attributes.CastSpeed = 2;
         Attributes.LowerManaCost = 10;
