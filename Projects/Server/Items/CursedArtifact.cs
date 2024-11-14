@@ -16,55 +16,48 @@ namespace Server.Items
         }
 
         // Called when the item is equipped
-        public override void OnEquip(Mobile from)
+        public override bool OnEquip(Mobile from)
         {
-            base.OnEquip(from);
-
             if (IsCursed)
             {
                 from.SendMessage("An immediate curse emanates from the artifact as you equip it!");
                 ApplyCursedEffects(from);
                 StartCurseTimer(TimeSpan.FromMinutes(5));
             }
+            return base.OnEquip(from);
         }
 
-        // Called when the item is added to the backpack
-        public override void OnAddedToBackpack(Mobile from)
+        // Called when the item is added to the player's inventory or container
+        public void OnAdded(object parent)
         {
-            base.OnAddedToBackpack(from);
-
-            if (IsCursed)
+            if (IsCursed && parent is Mobile owner)
             {
-                from.SendMessage("An immediate curse emanates from the artifact as you pick it up!");
-                ApplyCursedEffects(from);
+                owner.SendMessage("An immediate curse emanates from the artifact as you pick it up!");
+                ApplyCursedEffects(owner);
                 StartCurseTimer(TimeSpan.FromMinutes(5));
             }
         }
 
-        public override void OnRemoved(object parent)
+        // Custom method to manually remove curse effects when the timer expires
+        public void RemoveCurse(Mobile owner)
         {
-            base.OnRemoved(parent);
-
-            if (parent is Mobile owner && IsCursed)
+            if (IsCursed)
             {
-                RemoveCursedEffects(owner); // Remove effects from the player, but the curse remains on the item
+                RemoveCursedEffects(owner); // Removes effects but not the curse itself
+                IsCursed = false; // The item is no longer cursed
             }
         }
 
-        public override bool CanInsure => !IsCursed; // Prevents item from being insured while cursed
-
         private void StartCurseTimer(TimeSpan duration)
         {
-            // Stop any existing timer to prevent overlap
-            _curseTimer?.Stop();
+            _curseTimer?.Stop(); // Stop any existing timer to avoid overlap
 
             // Start a new timer to remove the curse after the specified duration
             _curseTimer = Timer.DelayCall(duration, () =>
             {
-                IsCursed = false; // The item is no longer cursed after 5 minutes
-                _curseTimer = null; // Clear the timer reference
+                IsCursed = false;
+                _curseTimer = null;
 
-                // Notify the current holder if there's one
                 if (RootParent is Mobile holder)
                 {
                     holder.SendMessage("The curse on the artifact has faded.");
@@ -74,9 +67,9 @@ namespace Server.Items
 
         private void ApplyCursedEffects(Mobile owner)
         {
-            // Prevent hiding, invisibility, and dismount the player
+            // Prevents hiding, invisibility, and dismounts the player
             owner.Dismount();
-            owner.Hidden = false; // Ensure visibility if holding the artifact
+            owner.Hidden = false;
             owner.SendMessage("The cursed artifact prevents you from hiding or becoming invisible.");
         }
 
