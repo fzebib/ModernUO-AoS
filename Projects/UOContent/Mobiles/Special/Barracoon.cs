@@ -57,7 +57,8 @@ public partial class Barracoon : BaseChampion
 
     public override Type[] UniqueList => new[] 
     { 
-        typeof(FangOfRactus)
+        typeof(FangOfRactus),
+        typeof(OrnamentOfTheMagician)
         };
 
     public override Type[] SharedList => new[]

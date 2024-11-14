@@ -261,11 +261,36 @@ public abstract partial class BaseChampion : BaseCreature
             }
         }
 
-    // New Code: Attempt to generate an artifact
+   // New Code: Attempt to generate an artifact and give to a random eligible player
     var artifact = GetArtifact();
     if (artifact != null)
     {
-        c.DropItem(artifact); // Add the artifact to the boss's loot container
+        // Ensure there's at least one eligible player
+        var rights = GetLootingRights(DamageEntries, HitsMax);
+        var eligiblePlayers = new List<Mobile>();
+
+        for (var i = rights.Count - 1; i >= 0; --i)
+        {
+            var ds = rights[i];
+
+            if (ds.m_HasRight)
+            {
+                eligiblePlayers.Add(ds.m_Mobile);
+            }
+        }
+
+        // If there are eligible players, give the artifact to one of them
+        if (eligiblePlayers.Count > 0)
+        {
+            var recipient = eligiblePlayers.RandomElement();
+            recipient.AddToBackpack(artifact);
+            recipient.SendMessage("You have received an artifact for your valor in battle!");
+        }
+        else
+        {
+            // If no eligible players (fallback), drop the artifact on the corpse
+            c.DropItem(artifact);
+        }
     }
 
         base.OnDeath(c);
