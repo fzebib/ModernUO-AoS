@@ -5,7 +5,7 @@ using Server.Mobiles;
 
 namespace Server.Items
 {
-    [SerializationGenerator(0, false)]
+    [SerializationGenerator(1, false)]
     public partial class OrnamentOfTheMagician : BaseJewel, ICursedItem
     {
         private readonly CursedArtifactHelper _cursedHelper = new();
