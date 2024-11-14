@@ -89,6 +89,11 @@ public partial class Barracoon : BaseChampion
     public override void GenerateLoot()
     {
         AddLoot(LootPack.UltraRich, 3);
+            // Add a test drop for artifact items at 100% chance
+    if (Utility.RandomDouble() < 1.0) // 100% drop rate for testing
+    {
+        PackItem(new OrnamentOfTheMagician());
+    }
     }
 
     public void Polymorph(Mobile m)
