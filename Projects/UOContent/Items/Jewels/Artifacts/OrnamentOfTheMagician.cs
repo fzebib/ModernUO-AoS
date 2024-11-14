@@ -18,6 +18,8 @@ namespace Server.Items
         }
 
         public override int LabelNumber => 1061105; // Ornament of the Magician
-        public override int ArtifactRarity => 11;
+        
+        // Remove 'override' and declare as a regular property
+        public int ArtifactRarity => 11;
     }
 }
