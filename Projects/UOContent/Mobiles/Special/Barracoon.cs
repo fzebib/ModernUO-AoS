@@ -88,7 +88,7 @@ public partial class Barracoon : BaseChampion
 
     public override void GenerateLoot()
     {
-        AddLoot(LootPack.UltraRich, 3);
+        AddLoot(LootPack.UltraRich, 4);
             // Add a test drop for artifact items at 100% chance
     if (Utility.RandomDouble() < 1.0) // 100% drop rate for testing
     {
