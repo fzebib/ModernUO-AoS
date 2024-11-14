@@ -67,9 +67,15 @@ namespace Server.Items
 
         private void ApplyCursedEffects(Mobile owner)
         {
-            // Prevents hiding, invisibility, and dismounts the player
-            owner.Dismount();
+            // Ensure visibility if holding the artifact
             owner.Hidden = false;
+
+            // Dismount if mounted (if IsMounted is supported by the server)
+            if (owner is BaseCreature creature && creature.Controlled && creature.IsMounted)
+            {
+                creature.Rider = null;
+            }
+
             owner.SendMessage("The cursed artifact prevents you from hiding or becoming invisible.");
         }
 
