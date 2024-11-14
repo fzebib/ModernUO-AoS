@@ -12,19 +12,31 @@ namespace Server.Items
         [Constructible]
         public CursedArtifact(int itemID) : base(itemID)
         {
-            Hue = 0x554; // Default cursed artifact hue (can be changed per item)
+            Hue = 0x554; // Default cursed artifact hue
         }
 
-        public override void OnAdded(object parent)
+        // Called when the item is equipped
+        public override void OnEquip(Mobile from)
         {
-            base.OnAdded(parent);
+            base.OnEquip(from);
 
-            if (IsCursed && parent is Mobile owner)
+            if (IsCursed)
             {
-                owner.SendMessage("An immediate curse emanates from the artifact as you pick it up!");
-                ApplyCursedEffects(owner);
+                from.SendMessage("An immediate curse emanates from the artifact as you equip it!");
+                ApplyCursedEffects(from);
+                StartCurseTimer(TimeSpan.FromMinutes(5));
+            }
+        }
 
-                // Start the timer to remove the curse after exactly 5 minutes
+        // Called when the item is added to the backpack
+        public override void OnAddedToBackpack(Mobile from)
+        {
+            base.OnAddedToBackpack(from);
+
+            if (IsCursed)
+            {
+                from.SendMessage("An immediate curse emanates from the artifact as you pick it up!");
+                ApplyCursedEffects(from);
                 StartCurseTimer(TimeSpan.FromMinutes(5));
             }
         }
