@@ -261,6 +261,13 @@ public abstract partial class BaseChampion : BaseCreature
             }
         }
 
+    // New Code: Attempt to generate an artifact
+    var artifact = GetArtifact();
+    if (artifact != null)
+    {
+        c.DropItem(artifact); // Add the artifact to the boss's loot container
+    }
+
         base.OnDeath(c);
     }
 
