@@ -29,9 +29,9 @@ public abstract partial class BaseChampion : BaseCreature
     public Item GetArtifact() =>
         Utility.RandomDouble() switch
         {
-            < 1.0 => CreateArtifact(UniqueList),
-            < 1.0 => CreateArtifact(SharedList),
-            < 1.0 => CreateArtifact(DecorativeList),
+            < 0.98 => CreateArtifact(UniqueList),
+            < 0.99 => CreateArtifact(SharedList),
+            < 1.00 => CreateArtifact(DecorativeList),
             _      => null
         };
 
