@@ -70,10 +70,10 @@ namespace Server.Items
             // Ensure visibility if holding the artifact
             owner.Hidden = false;
 
-            // Dismount if mounted (if IsMounted is supported by the server)
-            if (owner is BaseCreature creature && creature.Controlled && creature.IsMounted)
+            // Attempt to dismount if the server supports mounting
+            if (owner.Mount != null)
             {
-                creature.Rider = null;
+                owner.Mount.Rider = null; // Dismount the player if possible
             }
 
             owner.SendMessage("The cursed artifact prevents you from hiding or becoming invisible.");
