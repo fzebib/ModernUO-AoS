@@ -37,13 +37,15 @@ namespace Server.Items
             return base.OnEquip(from);
         }
 
-        public override void OnRemoved(object parent)
+        // Use OnDelete to clear curse effects if the item is deleted
+        public override void OnDelete()
         {
-            base.OnRemoved(parent);
-            if (parent is Mobile owner && IsCursed)
+            if (RootParent is Mobile owner)
             {
                 _cursedHelper.RemoveCursedEffects(owner);
             }
+
+            base.OnDelete();
         }
 
         // These methods are exposed from the helper to satisfy the ICursedItem interface
