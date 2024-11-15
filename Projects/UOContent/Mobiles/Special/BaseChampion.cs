@@ -51,10 +51,22 @@ public abstract partial class BaseChampion : BaseCreature
             statuette.Type = StatueTypes.RandomElement();
             statuette.LootType = LootType.Regular;
         }
-        
-        if (artifact is ICursedItem cursedArtifact)
+        else 
         {
-            cursedArtifact.StartCurseTimer(); // Apply the curse immediately
+            // Curse the artifact
+            artifact.LootType = LootType.Cursed;
+
+            // Start a 5 minute timer for the curse
+            Timer.DelayCall(TimeSpan.FromMinutes(5), () =>
+            {
+                // After 5 minutes, remove the curse
+                artifact.LootType = LootType.Regular;
+                artifact.InvalidateProperties();
+                if (artifact.RootParent is Mobile owner)
+                {
+                    owner.SendMessage("The curse on the item has faded.");
+                }
+            });
         }
 
         return artifact;
@@ -266,13 +278,12 @@ public abstract partial class BaseChampion : BaseCreature
             }
         }
 
-    // New Code: Attempt to generate an artifact
-    var artifact = GetArtifact();
-    if (artifact != null)
-    {
-        c.DropItem(artifact); 
-    }
-
+        // Attempt to generate an artifact
+        var artifact = GetArtifact();
+        if (artifact != null)
+        {
+            c.DropItem(artifact);
+        }
         base.OnDeath(c);
     }
 
