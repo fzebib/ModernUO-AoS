@@ -51,6 +51,11 @@ public abstract partial class BaseChampion : BaseCreature
             statuette.Type = StatueTypes.RandomElement();
             statuette.LootType = LootType.Regular;
         }
+        
+        if (artifact is ICursedItem cursedArtifact)
+        {
+            cursedArtifact.StartCurseTimer(); // Apply the curse immediately
+        }
 
         return artifact;
     }
