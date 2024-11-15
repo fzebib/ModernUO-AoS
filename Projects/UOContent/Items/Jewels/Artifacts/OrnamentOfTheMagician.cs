@@ -37,12 +37,12 @@ namespace Server.Items
             _curseHelper.RemoveCursedEffects(owner);
         }
 
-        // Called when the item is dropped, which starts the curse timer
-        public override void OnAdded(object parent)
+        // Hook into OnLocationChange to check if item is placed in a player’s inventory
+        public override void OnLocationChange(Point3D oldLoc, Point3D newLoc, Map oldMap, Map newMap)
         {
-            base.OnAdded(parent);
+            base.OnLocationChange(oldLoc, newLoc, oldMap, newMap);
 
-            if (parent is Mobile owner && IsCursed)
+            if (Parent is Mobile owner && IsCursed)
             {
                 ApplyCursedEffects(owner);
                 _curseHelper.StartCurseTimer(owner);
