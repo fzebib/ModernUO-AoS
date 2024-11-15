@@ -1214,7 +1214,12 @@ public partial class Mobile : IHued, IComparable<Mobile>, ISpawnable, IObjectPro
         get => m_Hidden;
         set
         {
-            if (m_Hidden != value)
+            if(isHoldingCursedArtifact) 
+            {
+                this.SendMessage("You cannot hide while holding a cursed artifact.");
+                return;
+            }
+            else if (m_Hidden != value)
             {
                 m_Hidden = value;
                 // Delta( MobileDelta.Flags );
@@ -1223,6 +1228,8 @@ public partial class Mobile : IHued, IComparable<Mobile>, ISpawnable, IObjectPro
             }
         }
     }
+
+    public bool isHoldingCursedArtifact { get; set; } = false;
 
     [CommandProperty(AccessLevel.GameMaster, AccessLevel.Owner)]
     public NetState NetState
