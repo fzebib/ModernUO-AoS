@@ -55,6 +55,7 @@ public abstract partial class BaseChampion : BaseCreature
         {
             // Curse the artifact
             artifact.LootType = LootType.Cursed;
+            artifact.InvalidateProperties();
 
             // Start a 5 minute timer for the curse
             Timer.DelayCall(TimeSpan.FromMinutes(5), () =>
