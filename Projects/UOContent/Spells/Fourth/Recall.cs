@@ -40,7 +40,11 @@ namespace Server.Spells.Fourth
 
         public void Effect(Point3D loc, Map map, bool checkMulti)
         {
-            if (Sigil.ExistsOn(Caster))
+            if(Caster.isHoldingCursedArtifact) 
+            {
+                Caster.SendMessage("You cannot recall while holding a cursed artifact.");
+            }
+            else if (Sigil.ExistsOn(Caster))
             {
                 Caster.SendLocalizedMessage(1061632); // You can't do that while carrying the sigil.
             }

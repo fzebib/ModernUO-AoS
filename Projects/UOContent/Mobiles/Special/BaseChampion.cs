@@ -56,6 +56,10 @@ public abstract partial class BaseChampion : BaseCreature
             // Curse the artifact
             artifact.LootType = LootType.Cursed;
             artifact.InvalidateProperties();
+            if (artifact.RootParent is Mobile owner)
+            {
+                owner.isHoldingCursedArtifact = true;
+            }
 
             // Start a 5 minute timer for the curse
             Timer.DelayCall(TimeSpan.FromMinutes(5), () =>
@@ -65,6 +69,7 @@ public abstract partial class BaseChampion : BaseCreature
                 artifact.InvalidateProperties();
                 if (artifact.RootParent is Mobile owner)
                 {
+                    owner.isHoldingCursedArtifact = false;
                     owner.SendMessage("The curse on the item has faded.");
                 }
             });
