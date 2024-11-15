@@ -37,10 +37,10 @@ namespace Server.Items
             _curseHelper.RemoveCursedEffects(owner);
         }
 
-        // Hook into OnLocationChange to check if item is placed in a player’s inventory
-        public override void OnLocationChange(Point3D oldLoc, Point3D newLoc, Map oldMap, Map newMap)
+        // This method is called whenever the item's parent changes (e.g., it’s added to a player’s backpack)
+        public override void OnParentChanged(object oldParent)
         {
-            base.OnLocationChange(oldLoc, newLoc, oldMap, newMap);
+            base.OnParentChanged(oldParent);
 
             if (Parent is Mobile owner && IsCursed)
             {
